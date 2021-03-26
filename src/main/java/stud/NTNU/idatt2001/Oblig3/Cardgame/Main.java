@@ -40,6 +40,15 @@ public class Main extends Application {
         return t;
     }
 
+    //Label format
+    private Label styleLabel (String text, int x, int y, String font, int fontSize){
+        Label l = new Label (text);
+        l.setFont(Font.font(font, fontSize));
+        l.setTranslateX(x);
+        l.setTranslateY(y);
+        return l;
+    }
+
     @Override
     public void start(Stage stage) throws WrongInputException, IOException {
         stage.setTitle("Cardgame");
@@ -57,15 +66,11 @@ public class Main extends Application {
         GridPane gridPane = new GridPane();
 
         //headline label
-        Label headline = new Label("Cardgame");
-        headline.setFont(Font.font("Cambay",30));
-        headline.setTranslateX(170);
-        headline.setTranslateY(-50);
+        Label headline = styleLabel("Cardgame",170,-50,"Cambay",30);
 
         //amount of cards title
-        Label amountOfCardsTitle = new Label("Amount of cards:");
-        amountOfCardsTitle.setFont(Font.font("Cambay",14));
-        amountOfCardsTitle.setTranslateX(450);
+        Label amountOfCardsTitle = styleLabel("Amount of cards:",450,0,"Cambay",14);
+
 
         //amount of cards input
         DeckOfCards deckOfCards = new DeckOfCards();
@@ -147,28 +152,16 @@ public class Main extends Application {
         });
 
         //sum of the faces title
-        Label sumOfTheFacesTitle = new Label("Sum of the faces:");
-        sumOfTheFacesTitle.setFont(Font.font("Cambay",13));
-        sumOfTheFacesTitle.setTranslateX(100);
-        sumOfTheFacesTitle.setTranslateY(250);
+        Label sumOfTheFacesTitle = styleLabel("Sum of the faces:",100,250,"Cambay",13);
 
         //cards of hearts title
-        Label cardsOfHeartsTitle = new Label("Cards of hearts:");
-        cardsOfHeartsTitle.setFont(Font.font("Cambay",13));
-        cardsOfHeartsTitle.setTranslateX(318);
-        cardsOfHeartsTitle.setTranslateY(250);
+        Label cardsOfHeartsTitle = styleLabel("Cards of hearts:",318,250,"Cambay",13);
 
         //flush title
-        Label flushTitle = new Label("Flush:");
-        flushTitle.setFont(Font.font("Cambay",13));
-        flushTitle.setTranslateX(161);
-        flushTitle.setTranslateY(280);
+        Label flushTitle = styleLabel("Flush:",161,280,"Cambay",13);
 
         //queens of spades title
-        Label queenOfSpadesTitle = new Label("Queens of spades (S12):");
-        queenOfSpadesTitle.setFont(Font.font("Cambay",13));
-        queenOfSpadesTitle.setTranslateX(270);
-        queenOfSpadesTitle.setTranslateY(280);
+        Label queenOfSpadesTitle = styleLabel("Queens of spades (S12):",270,280,"Cambay",13);
 
         //window settings
         firstPage.getChildren().addAll(headline,amountOfCardsTitle,amountOfCardsInput,dealHandButton,checkHandButton,sumOfTheFacesTitle,cardsOfHeartsTitle,flushTitle,queenOfSpadesTitle,flowPane, gridPane);
