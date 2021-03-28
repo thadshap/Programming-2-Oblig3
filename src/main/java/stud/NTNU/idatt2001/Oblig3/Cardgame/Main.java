@@ -1,17 +1,14 @@
 package stud.NTNU.idatt2001.Oblig3.Cardgame;
 
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
@@ -26,9 +23,17 @@ import java.util.stream.Collectors;
 
 /**
  * JavaFX Main
+ *
+ * @author Thadshajini
+ * @version 2020-04-08
  */
 public class Main extends Application {
 
+    //The object variable "cards" contains all the random cards that the user receives after writing the amount of cards the user wants in the input field.
+    //HashSet is the collection that has been selected to return the random cards.
+    //The reason why is because:
+    //Hashset does not allow duplicates and it fits well in this context due to that a deck of cards where we draw random cards from do not contain cards of the same type (same suit and face).
+    //We also do not need the order of the elements, ie the cards that are returned.
     HashSet<PlayingCard> cards;
 
     //Text format
@@ -53,9 +58,10 @@ public class Main extends Application {
     public void start(Stage stage) throws WrongInputException, IOException {
         stage.setTitle("Cardgame");
 
+        //A layout component which lays out all the components required by the task
         GridPane firstPage = new GridPane();
 
-        //box
+        //flowPane contains all the random cards which returns after writing an amount of cards in the input field and press the "Deal Hand" button.
         FlowPane flowPane = new FlowPane();
         flowPane.setAlignment(Pos.TOP_LEFT);
         flowPane.setStyle("-fx-background-color: lightgrey;");
@@ -63,33 +69,25 @@ public class Main extends Application {
         flowPane.setTranslateY(90);
         flowPane.setPrefSize(300,200);
 
+        //gridPane contains all the results from "Check Hand", which is sum of the faces, cards of hearts, flush and queens of spades.
         GridPane gridPane = new GridPane();
 
-        //headline label
+        //Headline label
         Label headline = styleLabel("Cardgame",170,-50,"Cambay",30);
 
-        //amount of cards title
+        //Amount of cards title
         Label amountOfCardsTitle = styleLabel("Amount of cards:",450,0,"Cambay",14);
 
-
-        //amount of cards input
+        //Amount of cards input
         DeckOfCards deckOfCards = new DeckOfCards();
         TextField amountOfCardsInput = new TextField();
         amountOfCardsInput.setMaxWidth(40);
         amountOfCardsInput.setTranslateX(450);
         amountOfCardsInput.setTranslateY(35);
+        amountOfCardsInput.setTextFormatter(new TextFormatter<>(change ->
+                (change.getControlNewText().matches("[\\\\s]*|[5-9]|[1-4][0-9]|5[0-2]")) ? change : null));
 
-        ChangeListener<String> changeListener = new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("[\\s]*|[1-9]|[1-4][0-9]|5[0-2]")) {
-                    amountOfCardsInput.setText(oldValue);
-                }
-            }
-        };
-        amountOfCardsInput.textProperty().addListener(changeListener);
-
-        //check hand button
+        //"Check Hand" button
         Button dealHandButton = new Button("Deal Hand");
         Button checkHandButton = new Button("Check Hand");
         checkHandButton.setTranslateX(450);
@@ -125,7 +123,7 @@ public class Main extends Application {
             }
         });
 
-        //deal hand button
+        //"Deal Hand" button
         Text text = new Text("");
         dealHandButton.setTranslateX(450);
         dealHandButton.setTranslateY(80);
@@ -151,20 +149,20 @@ public class Main extends Application {
             }
         });
 
-        //sum of the faces title
+        //Sum of the faces title
         Label sumOfTheFacesTitle = styleLabel("Sum of the faces:",100,250,"Cambay",13);
 
-        //cards of hearts title
+        //Cards of hearts title
         Label cardsOfHeartsTitle = styleLabel("Cards of hearts:",318,250,"Cambay",13);
 
-        //flush title
+        //Flush title
         Label flushTitle = styleLabel("Flush:",161,280,"Cambay",13);
 
-        //queens of spades title
+        //Queens of spades title
         Label queenOfSpadesTitle = styleLabel("Queens of spades (S12):",270,280,"Cambay",13);
 
-        //window settings
-        firstPage.getChildren().addAll(headline,amountOfCardsTitle,amountOfCardsInput,dealHandButton,checkHandButton,sumOfTheFacesTitle,cardsOfHeartsTitle,flushTitle,queenOfSpadesTitle,flowPane, gridPane);
+        //Stage and scene settings
+        firstPage.getChildren().addAll(headline,amountOfCardsTitle,amountOfCardsInput,sumOfTheFacesTitle,cardsOfHeartsTitle,flushTitle,queenOfSpadesTitle,flowPane, gridPane,dealHandButton,checkHandButton);
         Scene scene = new Scene(firstPage,670,480);
         stage.setScene(scene);
         stage.show();
@@ -173,5 +171,4 @@ public class Main extends Application {
     public static void main(String[] args) {
          launch(args);
      }
-
 }
